@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local test files
+test.html
+debug.html
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
