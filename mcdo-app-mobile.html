@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#FFC107">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="McDo Points">
+  <title>McDo Points Checker - Mobile</title>
+  
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230A0A0A'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFC107'/%3E%3Cstop offset='100%25' style='stop-color:%23DA291C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='40' y='50' width='100' height='70' rx='12' fill='url(%23g)'/%3E%3Ctext x='90' y='95' font-family='Arial' font-size='45' font-weight='bold' fill='%230A0A0A' text-anchor='middle'%3EM%3C/text%3E%3Ccircle cx='145' cy='145' r='22' fill='%2327AE60'/%3E%3Ctext x='145' y='155' font-family='Arial' font-size='25' font-weight='bold' fill='white' text-anchor='middle'%3E✓%3C/text%3E%3C/svg%3E">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    :root {
+      --primary: #FFC107;
+      --primary-dark: #FFA000;
+      --accent: #DA291C;
+      --bg: #0A0A0A;
+      --bg-card: #1A1A1A;
+      --bg-input: #252525;
+      --text: #FFFFFF;
+      --text-secondary: #A0A0A0;
+      --text-muted: #666666;
+      --success: #27AE60;
+      --error: #E74C3C;
+      --warning: #F39C12;
+      --border: #2A2A2A;
+      
+      --font-display: 'Poppins', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    
+    body {
+      font-family: var(--font-display);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(255, 193, 7, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(218, 41, 28, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 0;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(218, 41, 28, 0.15) 100%);
+      padding: max(env(safe-area-inset-top), 20px) 20px 20px;
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--bg);
+      box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    .header-text h1 {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .header-text p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    
+    /* Main content */
+    .content {
+      padding: 20px;
+    }
+    
+    /* Add form */
+    .add-section {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border: 1px solid var(--border);
+      animation: slideIn 0.4s ease;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .add-section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 15px;
+      transition: all 0.2s ease;
+    }
+    
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--bg);
+      box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+    }
+    
+    .form-group small {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: var(--bg);
+      box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    }
+    
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+    
+    .btn-secondary {
+      background: var(--bg-input);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    
+    .btn-secondary:active {
+      background: var(--bg);
+    }
+    
+    /* Cards list */
+    .cards-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .cards-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .check-all-btn {
+      background: var(--success);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(39, 174, 96, 0.3);
+    }
+    
+    .check-all-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .check-all-btn.checking {
+      background: var(--warning);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    .cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.4s ease;
+      transition: all 0.3s ease;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--accent));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .card.checking::before {
+      opacity: 1;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .card-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .card-info .card-time {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .icon-btn:active {
+      transform: scale(0.9);
+      background: var(--bg);
+    }
+    
+    .card-points {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .points-value {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+    
+    .points-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      padding-top: 8px;
+    }
+    
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    
+    .card-url {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 60%;
+    }
+    
+    .status {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    
+    .status.success {
+      background: rgba(39, 174, 96, 0.15);
+      color: var(--success);
+    }
+    
+    .status.checking {
+      background: rgba(243, 156, 18, 0.15);
+      color: var(--warning);
+    }
+    
+    .status.checking .status-dot {
+      animation: pulse 1s ease-in-out infinite;
+    }
+    
+    .status.error {
+      background: rgba(231, 76, 60, 0.15);
+      color: var(--error);
+    }
+    
+    .status.idle {
+      background: rgba(160, 160, 160, 0.15);
+      color: var(--text-muted);
+    }
+    
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+    
+    .empty-state p {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    
+    .empty-state small {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    
+    /* Toast notifications */
+    .toast-container {
+      position: fixed;
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      left: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    
+    .toast {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      animation: slideUp 0.3s ease;
+      pointer-events: auto;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--error); }
+    .toast.info { border-left: 4px solid var(--primary); }
+    
+    .toast-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .toast-content {
+      flex: 1;
+    }
+    
+    .toast-title {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    
+    .toast-message {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Install prompt */
+    .install-prompt {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: var(--bg);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+      animation: slideIn 0.5s ease;
+    }
+    
+    .install-prompt.hidden {
+      display: none;
+    }
+    
+    .install-text {
+      flex: 1;
+    }
+    
+    .install-text strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .install-text small {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    
+    .install-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .install-btn {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .install-btn.primary {
+      background: var(--bg);
+      color: var(--primary);
+    }
+    
+    .install-btn.secondary {
+      background: rgba(0, 0, 0, 0.2);
+      color: var(--bg);
+    }
+    
+    .install-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">M</div>
+        <div class="header-text">
+          <h1>McDo Points</h1>
+          <p>Vérifiez vos points de fidélité</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Install Prompt -->
+    <div class="install-prompt hidden" id="installPrompt">
+      <div class="install-text">
+        <strong>📱 Installer l'app</strong>
+        <small>Ajoutez à l'écran d'accueil pour un accès rapide</small>
+      </div>
+      <div class="install-actions">
+        <button class="install-btn primary" onclick="installApp()">Installer</button>
+        <button class="install-btn secondary" onclick="dismissInstall()">Plus tard</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Add form -->
+      <div class="add-section">
+        <h2>➕ Ajouter des liens</h2>
+        <form id="addForm">
+          <div class="form-group">
+            <label for="links">Liens Captain Wallet (un par ligne)</label>
+            <textarea 
+              id="links" 
+              placeholder="https://mcdo.captainwallet.com/fr/fidelite?context=...
+https://mcdo.captainwallet.com/fr/fidelite?context=...
+https://mcdo.captainwallet.com/fr/fidelite?context=..."
+              required
+            ></textarea>
+            <small>💡 Collez plusieurs liens, ils seront testés en même temps</small>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <span>Ajouter et vérifier</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Cards list -->
+      <div class="cards-section">
+        <div class="cards-header">
+          <h2>📊 Mes cartes</h2>
+          <button class="check-all-btn" id="checkAllBtn" onclick="checkAllCards()">
+            <span class="spinner" style="display: none;"></span>
+            <span class="text">Tout vérifier</span>
+          </button>
+        </div>
+        <div class="cards-list" id="cardsList">
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="6" width="18" height="13" rx="2"/>
+              <path d="M3 10h18"/>
+            </svg>
+            <p>Aucune carte enregistrée</p>
+            <small>Ajoutez vos liens Captain Wallet ci-dessus</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════
+    // ÉTAT GLOBAL
+    // ═══════════════════════════════════════════════════
+    
+    let cards = [];
+    let deferredPrompt;
+    
+    // ═══════════════════════════════════════════════════
+    // INITIALISATION
+    // ═══════════════════════════════════════════════════
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCards();
+      setupEventListeners();
+      checkInstallPrompt();
+    });
+    
+    // ═══════════════════════════════════════════════════
+    // GESTION DES CARTES
+    // ═══════════════════════════════════════════════════
+    
+    function loadCards() {
+      const saved = localStorage.getItem('mcdo_cards');
+      if (saved) {
+        cards = JSON.parse(saved);
+        renderCards();
+      }
+    }
+    
+    function saveCards() {
+      localStorage.setItem('mcdo_cards', JSON.stringify(cards));
+    }
+    
+    function addCard(url, label = '') {
+      const context = extractContext(url);
+      if (!context) return null;
+      
+      // Vérifier si déjà existant
+      if (cards.some(c => c.context === context)) {
+        return null;
+      }
+      
+      const card = {
+        id: Date.now().toString() + Math.random().toString(36).substring(2),
+        context: context,
+        url: url,
+        label: label || `Carte ${cards.length + 1}`,
+        addedAt: Date.now(),
+        lastCheck: null,
+        points: null,
+        status: 'idle'
+      };
+      
+      cards.push(card);
+      saveCards();
+      return card;
+    }
+    
+    function extractContext(url) {
+      const match = url.match(/[?&]context=([A-Za-z0-9+/=_-]+)/);
+      return match ? match[1] : null;
+    }
+    
+    function renderCards() {
+      const container = document.getElementById('cardsList');
+      
+      if (cards.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="6" width="18" height="13" rx="2"/>
+              <path d="M3 10h18"/>
+            </svg>
+            <p>Aucune carte enregistrée</p>
+            <small>Ajoutez vos liens Captain Wallet ci-dessus</small>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = cards.map(card => `
+        <div class="card ${card.status}" data-card-id="${card.id}">
+          <div class="card-header">
+            <div class="card-info">
+              <h3>${card.label}</h3>
+              <span class="card-time">
+                ${card.lastCheck ? formatTime(card.lastCheck) : 'Jamais vérifié'}
+              </span>
+            </div>
+            <div class="card-actions">
+              <button class="icon-btn" onclick="checkCard('${card.id}')" title="Vérifier">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.5 2v6h-6M2.5 22v-6h6M19 8.5A8 8 0 0 0 5 12M5 15.5a8 8 0 0 0 14-4"/>
+                </svg>
+              </button>
+              <button class="icon-btn" onclick="deleteCard('${card.id}')" title="Supprimer">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 6h18M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2m3 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6h14z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="card-points">
+            <span class="points-value">${card.points !== null ? card.points : '—'}</span>
+            <span class="points-label">points</span>
+          </div>
+          
+          <div class="card-footer">
+            <span class="card-url" title="${card.url}">${card.url.substring(0, 30)}...</span>
+            <span class="status ${card.status}">
+              <span class="status-dot"></span>
+              ${getStatusLabel(card.status)}
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function getStatusLabel(status) {
+      const labels = {
+        'success': 'OK',
+        'checking': 'Vérif...',
+        'error': 'Erreur',
+        'idle': 'En attente'
+      };
+      return labels[status] || 'Inconnu';
+    }
+    
+    function formatTime(timestamp) {
+      const diff = Date.now() - timestamp;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      
+      if (minutes < 1) return 'À l\'instant';
+      if (minutes < 60) return `Il y a ${minutes}m`;
+      if (hours < 24) return `Il y a ${hours}h`;
+      return new Date(timestamp).toLocaleDateString('fr-FR');
+    }
+    
+    function deleteCard(cardId) {
+      if (!confirm('Supprimer cette carte ?')) return;
+      
+      cards = cards.filter(c => c.id !== cardId);
+      saveCards();
+      renderCards();
+      showToast('Carte supprimée', 'La carte a été supprimée', 'success');
+    }
+    
+    // ═══════════════════════════════════════════════════
+    // VÉRIFICATION DES POINTS
+    // ═══════════════════════════════════════════════════
+    
+    async function checkCard(cardId) {
+      const card = cards.find(c => c.id === cardId);
+      if (!card) return;
+      
+      card.status = 'checking';
+      saveCards();
+      renderCards();
+      
+      try {
+        // Ouvrir l'URL dans un iframe caché
+        const result = await checkPointsInIframe(card.url);
+        
+        if (result.success) {
+          card.points = result.points;
+          card.status = 'success';
+          card.lastCheck = Date.now();
+          showToast('Points récupérés', `${card.label}: ${result.points} points`, 'success');
+        } else {
+          card.status = 'error';
+          showToast('Erreur', result.error || 'Impossible de récupérer les points', 'error');
+        }
+      } catch (error) {
+        card.status = 'error';
+        showToast('Erreur', error.message, 'error');
+      }
+      
+      saveCards();
+      renderCards();
+    }
+    
+    async function checkAllCards() {
+      if (cards.length === 0) {
+        showToast('Aucune carte', 'Ajoutez des cartes d\'abord', 'info');
+        return;
+      }
+      
+      const btn = document.getElementById('checkAllBtn');
+      const spinner = btn.querySelector('.spinner');
+      const text = btn.querySelector('.text');
+      
+      btn.classList.add('checking');
+      spinner.style.display = 'inline-block';
+      text.textContent = 'Vérification...';
+      btn.disabled = true;
+      
+      showToast('Vérification', `Vérification de ${cards.length} carte(s)...`, 'info');
+      
+      // Vérifier toutes les cartes en parallèle
+      const promises = cards.map(card => checkCard(card.id));
+      await Promise.all(promises);
+      
+      btn.classList.remove('checking');
+      spinner.style.display = 'none';
+      text.textContent = 'Tout vérifier';
+      btn.disabled = false;
+      
+      showToast('Terminé', 'Toutes les cartes ont été vérifiées', 'success');
+    }
+    
+    async function checkPointsInIframe(url) {
+      return new Promise((resolve, reject) => {
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.style.position = 'absolute';
+        iframe.style.width = '1px';
+        iframe.style.height = '1px';
+        iframe.style.opacity = '0';
+        iframe.sandbox = 'allow-same-origin allow-scripts';
+        
+        let timeout;
+        
+        const cleanup = () => {
+          clearTimeout(timeout);
+          if (iframe.parentNode) {
+            document.body.removeChild(iframe);
+          }
+        };
+        
+        timeout = setTimeout(() => {
+          cleanup();
+          resolve({ success: false, error: 'Timeout - La page met trop de temps à charger' });
+        }, 15000);
+        
+        iframe.onload = () => {
+          setTimeout(() => {
+            try {
+              const doc = iframe.contentDocument || iframe.contentWindow.document;
+              const points = extractPointsFromDocument(doc);
+              
+              cleanup();
+              
+              if (points !== null) {
+                resolve({ success: true, points });
+              } else {
+                resolve({ success: false, error: 'Points non trouvés dans la page' });
+              }
+            } catch (error) {
+              cleanup();
+              resolve({ success: false, error: 'Erreur CORS - Impossible d\'accéder à la page' });
+            }
+          }, 2000);
+        };
+        
+        iframe.onerror = () => {
+          cleanup();
+          resolve({ success: false, error: 'Erreur de chargement de la page' });
+        };
+        
+        document.body.appendChild(iframe);
+        iframe.src = url;
+      });
+    }
+    
+    function extractPointsFromDocument(doc) {
+      // Méthode 1 : Texte visible
+      const text = doc.body.innerText || doc.body.textContent || '';
+      const patterns = [
+        /(\d+)\s*points?/i,
+        /points?\s*[:\s]*(\d+)/i,
+        /solde\s*[:\s]*(\d+)/i
+      ];
+      
+      for (const pattern of patterns) {
+        const match = text.match(pattern);
+        if (match && match[1]) {
+          const value = parseInt(match[1], 10);
+          if (!isNaN(value) && value >= 0 && value <= 999999) {
+            return value;
+          }
+        }
+      }
+      
+      // Méthode 2 : Attributs data-*
+      const elements = doc.querySelectorAll('[data-points], [data-balance], [data-value]');
+      for (const el of elements) {
+        const value = el.dataset.points || el.dataset.balance || el.dataset.value;
+        if (value) {
+          const parsed = parseInt(value, 10);
+          if (!isNaN(parsed) && parsed >= 0 && parsed <= 999999) {
+            return parsed;
+          }
+        }
+      }
+      
+      return null;
+    }
+    
+    // ═══════════════════════════════════════════════════
+    // FORMULAIRE
+    // ═══════════════════════════════════════════════════
+    
+    function setupEventListeners() {
+      document.getElementById('addForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const textarea = document.getElementById('links');
+        const linksText = textarea.value.trim();
+        
+        if (!linksText) {
+          showToast('Erreur', 'Veuillez entrer au moins un lien', 'error');
+          return;
+        }
+        
+        const lines = linksText.split('\n').filter(l => l.trim());
+        let added = 0;
+        let duplicates = 0;
+        let invalid = 0;
+        
+        for (const line of lines) {
+          const url = line.trim();
+          if (!url) continue;
+          
+          if (!extractContext(url)) {
+            invalid++;
+            continue;
+          }
+          
+          const card = addCard(url);
+          if (card) {
+            added++;
+          } else {
+            duplicates++;
+          }
+        }
+        
+        renderCards();
+        
+        if (added > 0) {
+          showToast('Cartes ajoutées', `${added} carte(s) ajoutée(s)`, 'success');
+          textarea.value = '';
+          
+          // Vérifier automatiquement les nouvelles cartes
+          setTimeout(() => checkAllCards(), 500);
+        }
+        
+        if (duplicates > 0) {
+          showToast('Doublons', `${duplicates} carte(s) déjà existante(s)`, 'info');
+        }
+        
+        if (invalid > 0) {
+          showToast('Liens invalides', `${invalid} lien(s) invalide(s)`, 'error');
+        }
+      });
+    }
+    
+    // ═══════════════════════════════════════════════════
+    // NOTIFICATIONS TOAST
+    // ═══════════════════════════════════════════════════
+    
+    function showToast(title, message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      
+      const icons = {
+        success: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3"/>',
+        error: '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>',
+        info: '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'
+      };
+      
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `
+        <div class="toast-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            ${icons[type]}
+          </svg>
+        </div>
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+      `;
+      
+      container.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideUp 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+    
+    // ═══════════════════════════════════════════════════
+    // INSTALLATION PWA
+    // ═══════════════════════════════════════════════════
+    
+    function checkInstallPrompt() {
+      // Pour iOS Safari
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isStandalone = window.navigator.standalone;
+      
+      if (isIOS && !isStandalone) {
+        const dismissed = localStorage.getItem('install_dismissed');
+        if (!dismissed) {
+          document.getElementById('installPrompt').classList.remove('hidden');
+        }
+      }
+      
+      // Pour Android Chrome
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const dismissed = localStorage.getItem('install_dismissed');
+        if (!dismissed) {
+          document.getElementById('installPrompt').classList.remove('hidden');
+        }
+      });
+    }
+    
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('installPrompt').classList.add('hidden');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        // Instructions iOS
+        showToast(
+          'Installation iOS',
+          'Appuyez sur Partager puis "Sur l\'écran d\'accueil"',
+          'info'
+        );
+        document.getElementById('installPrompt').classList.add('hidden');
+      }
+    }
+    
+    function dismissInstall() {
+      localStorage.setItem('install_dismissed', 'true');
+      document.getElementById('installPrompt').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
